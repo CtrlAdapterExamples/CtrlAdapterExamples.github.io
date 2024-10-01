@@ -1,0 +1,2081 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Ctrl-Adapter: An Efficient and Versatile Framework for Adapting Diverse Controls to Any Diffusion Model">
+	<meta name="keywords"
+		content="video,video generation,adapter,control,controlnet,diffusion,image generation,genai,image">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ctrl-Adapter</title>
+
+	<script>
+		window.dataLayer = window.dataLayer || [];
+
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+
+		gtag('js', new Date());
+
+		gtag('config', 'G-PYVRSFMDRL');
+	</script>
+
+	<link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+	<link rel="stylesheet" href="./static/css/bulma.min.css">
+	<link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+	<link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+	<link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+	<link rel="stylesheet" href="./static/css/index.css">
+	<!-- <link rel="icon" href="./static/images/favicon.svg"> -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script defer src="./static/js/fontawesome.all.min.js"></script>
+	<script src="./static/js/bulma-carousel.min.js"></script>
+	<script src="./static/js/bulma-slider.min.js"></script>
+	<script src="./static/js/index.js"></script>
+</head>
+
+<body>
+	<section class="hero">
+		<div class="hero-body">
+			<div class="container is-max-desktop">
+				<div class="columns is-centered">
+					<div class="column has-text-centered">
+						<h1 class="title is-1 publication-title">
+							<!-- <span style="color: rgb(237, 178, 13);">C</span><span style="color: rgb(112, 48, 160);">T</span><span style="color: rgb(0, 176, 240);">R</span><span style="color: rgb(215, 49, 136);">L</span>-Adapter -->
+							<span style="color: rgb(237, 178, 13);">C</span><span
+								style="color: rgb(112, 48, 160); font-size: 0.8em;">T</span><span
+								style="color: rgb(0, 176, 240); font-size: 0.8em;">R</span><span
+								style="color: rgb(215, 49, 136); font-size: 0.8em;">L</span>-Adapter:
+							An Efficient and Versatile Framework <br>
+							for Adapting Diverse Controls to Any Diffusion Model
+						</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<section class="hero teaser">
+		<!-- <div class="container is-max-desktop"> -->
+		<div class="container">
+			<div class="hero-body" style="display: flex; justify-content: center;">
+				<img src="./static/teaser.gif" style="width: 75%;">
+			</div>
+		</div>
+		
+		<style>
+			#see_other_page {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				margin-top: 20px;
+				width: 40%;
+				height: 200px;
+				margin: auto;
+				border: 1px solid red;
+			}
+
+			#see_other_page>h2 {
+				margin: auto;
+				font-size: 2em;
+			}
+			#see_other_page>p {
+				margin: auto;
+				font-size: 1.5em;
+			}
+		</style>
+	</section>
+
+	<section class="section">
+		<div class="container is-max-desktop" style="max-width: 2500px !important;">
+			<div class="columns is-centered has-text-centered">
+				<div class="column is-four-fifths">
+					<h2 class="title is-3">Generated Examples</h2>
+					<p>We show examples from both U-Net based models (I2V-GenXL & SDXL),  and DiT based models (Latte & Pixart-&alpha;)</p>
+					<br><br>
+					<div class="content has-text-justified">
+						<p>
+
+						</p>
+					</div>
+					<div class="content is-centered has-text-centered" >
+						<h3 class="example-heading">Video Generation with Condition Control (w/ I2V-GenXL; U-Net based)</h3>
+						<hr>
+						<div class="wrap-row">
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									<br>
+									"A fish swimming"
+									<br>
+									+
+									<br>
+									<img src="./static/videos/fish_first.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Control</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div>
+														<img width="125px"
+															src="./static/videos/5548246-uhd_3840_2160_25fps_1_condition.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;width: 125px;margin:auto;">
+														<img style="position: relative;" width="125px" height="125px"
+															src="./static/videos/5548246-uhd_3840_2160_25fps_1_depth.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									"A man riding a motorcycle jumps off a mountain"
+									<br>
+									+
+									<br>
+									<img src="./static/videos/tom_cruise_first.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Control</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div>
+														<img width="125px"
+															src="./static/videos/tom_cruise_mountain_jump_22_canny.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;width:125px;margin:auto;">
+														<img style="position: relative;" width="125px" height="125px"
+															src="./static/videos/tom_cruise_mountain_jump_22_depth_i2v.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									"Close-up of a majestic white dragon<br>
+									with pearlescent, silver-edged scales,<br>icy blue
+									eyes, elegantivory horns, and<br>misty breath. 
+									Focus on detailed facial<br>features and
+									textured scales, set<br>against a softly blurred background"
+									<br>
+									+
+									<br>
+									<img src="./static/videos/-bi_first.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Control</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div>
+														<img width="125px"
+															src="./static/videos/-bilRShkN6_ay5mW_2_input_i2v.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;width: 125px;margin:auto;">
+														<img style="position: relative;" width="125px" height="125px"
+															src="./static/videos/-bilRShkN6_ay5mW_2_depth_i2vgen.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									<br>
+									<br>
+									<br>
+									<br>
+									<br>
+									"A car flies over a hill"
+									<br>
+									+
+									<br>
+									<img src="./static/videos/flying_car_initial_frame.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Control</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div>
+														<img width="125px"
+															src="./static/videos/car_flies_over_a_hill_condition.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;width: 125px;margin:auto;">
+														<img style="position: relative;" width="125px" height="125px"
+															src="./static/videos/car_flies_over_a_hill_0.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									"A white and orange tabby cat<br>
+									is seen happily darting through a<br>
+									dense garden, as if chasing something.<br>
+									Its eyes are wide and happy<br>
+									as it jogs forward, scanning the<br>
+									branches, flowers, and leaves as it<br>
+									walks. The path is narrow as<br>
+									it makes its way between all<br>
+									the plants."
+									<br>
+									+
+									<br>
+									<img src="./static/videos/happy_cat_input.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Control</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div>
+														<img width="125px"
+															src="./static/videos/happy-cat_0_condition.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;width: 125px;margin:auto;">
+														<img style="position: relative;" width="125px" height="125px"
+															src="./static/videos/happy-cat_0.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									<br><br><br>
+									<br><br><br><br>
+									<br>
+									"A bird flying over a forest."
+									<br>
+									+
+									<br>
+									<img src="./static/videos/bird_flying_over_a_forest_7_inital_frame.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Control</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div>
+														<img width="125px"
+															src="./static/videos/bird_flying_over_a_forest_7_condition.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;width: 125px;margin:auto;">
+														<img style="position: relative;" width="125px" height="125px"
+															src="./static/videos/bird_flying_over_a_forest_7.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									"A miniature Christmas village with<br>
+									snow-covered houses, glowing<br>windows,
+									decorated trees, festive<br>snowmen,
+									and tiny figurines in
+									a<br>quaint, holiday-themed diorama<br>
+									evoking a cozy, celebratory
+									winter atmosphere"
+									<br>
+									+
+									<br>
+									<img src="./static/videos/b2_2_first.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Control</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div>
+														<img width="125px" src="./static/videos/b2_2_condition.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;width: 125px;margin:auto;">
+														<img style="position: relative;" width="125px" height="125px"
+															src="./static/videos/b2_2.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									<br><br><br>
+									"A woman wearing blue jeans and a<br>white t-shirt
+									taking a pleasant stroll in<br>Mumbai India
+									during a beautiful sunset"
+									<br>
+									+
+									<br>
+									<img src="./static/videos/woman_mumbai_2_first_frame.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Control</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div>
+														<img width="125px"
+															src="./static/videos/a-woman-wearing-blue-jeans-and-a-white-t-shirt-taking-a-pleasant-stroll-in-Mumbai-India-during-a-beautiful-sunset_2_condition.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;width: 125px;margin:auto;">
+														<img style="position: relative;" width="125px" height="125px"
+															src="./static/videos/a-woman-wearing-blue-jeans-and-a-white-t-shirt-taking-a-pleasant-stroll-in-Mumbai-India-during-a-beautiful-sunset_2.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br><br>
+
+					<div class="content is-centered has-text-centered" >
+						<h3 class="example-heading">Video Generation with Condition Control (w/ Latte; DiT based)</h3>
+						<hr>
+						<div class="wrap-row">
+							<div style="width: 40%;">
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									<br>
+									"A 2d abstract japanese animation where drops of ink in water form into lifelike creatures that swim and interact with each
+									other, creating an ethereal underwater world made entirely of flowing, merging colors"
+									
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Control</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div>
+														<img width="125px"
+															src="./static/videos/latte/condition/R_-3VzS5amcx-8lg_0.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;width: 125px;margin:auto;">
+														<img style="position: relative;" width="125px" height="125px"
+															src="./static/videos/latte/output/R_-3VzS5amcx-8lg_0.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+							<div style="width: 40%;">
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									<br>
+									"A giant, towering cloud in the shape of a man looms over the earth. The cloud man shoots lighting bolts down to the earth"
+									
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Control</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div>
+														<img width="125px"
+															src="./static/videos/latte/condition/cloud-man_0.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;width: 125px;margin:auto;">
+														<img style="position: relative;" width="125px" height="125px"
+															src="./static/videos/latte/output/cloud-man_0.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+							
+
+							<div style="width: 40%;">
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									<br>
+									"A medium sized friendly looking dog walks through an industrial parking lot. The environment is foggy and cloudy. Shot on 35mm film, vivid colors."
+									
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Control</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div>
+														<img width="125px"
+															src="./static/videos/latte/condition/YUX8Zc1qk3XVItFU_2.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;width: 125px;margin:auto;">
+														<img style="position: relative;" width="125px" height="125px"
+															src="./static/videos/latte/output/YUX8Zc1qk3XVItFU_2.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+					<br><br>
+
+					<div class="content is-centered has-text-centered"    style="max-width: 800px;margin: auto;">
+						<h3 class="example-heading">Video Generation with Multiple Control Conditions</h3>
+						<hr>
+						<div>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									"A small child and an adult standing<br>in shallow ocean
+									waters along the beach"
+									<br>
+									+
+									<br>
+									<img src="./static/videos/3327105-hd_1920_1080_24fps_16.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Controls</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div class="multi-source-div">
+														<img width="125px"
+															src="./static/videos/3327105-hd_1920_1080_24fps_16_depth.gif">
+														<img width="125px"
+															src="./static/videos/3327105-hd_1920_1080_24fps_16_canny.gif">
+														<img width="125px"
+															src="./static/videos/3327105-hd_1920_1080_24fps_16_pose.gif">
+														<img width="125px"
+															src="./static/videos/3327105-hd_1920_1080_24fps_16_segmentation.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;justify-content: center;">
+														<img style="position: relative;" width="250px" height="250px"
+															src="./static/videos/3327105-hd_1920_1080_24fps_16.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<br><br>
+							<br><br>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									<br>
+									"A man dancing"
+									<br>
+									+
+									<br>
+									<img src="./static/videos/5362370-uhd_3840_2160_25fps_0.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Controls</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div class="multi-source-div">
+														<img width="125px"
+															src="./static/videos/5362370-uhd_3840_2160_25fps_0_depth.gif">
+														<img width="125px"
+															src="./static/videos/5362370-uhd_3840_2160_25fps_0_canny.gif">
+														<img width="125px"
+															src="./static/videos/5362370-uhd_3840_2160_25fps_0_pose.gif">
+														<img width="125px"
+															src="./static/videos/5362370-uhd_3840_2160_25fps_0_segmentation.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;justify-content: center;">
+														<img style="position: relative;" width="250px" height="250px"
+															src="./static/videos/5362370-uhd_3840_2160_25fps_0.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<br><br>
+							<br><br>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									"A woman wearing purple overalls and cowboy boots<br>
+									taking a pleasant stroll in Johannesburg South Africa<br>
+									during a beautiful
+									sunset"
+									<br>
+									+
+									<br>
+									<img
+										src="./static/videos/purple_overalls_south_africa_sunset_0.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Controls</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div class="multi-source-div">
+														<img width="125px"
+															src="./static/videos/purple_overalls_south_africa_sunset_0_depth.gif">
+														<img width="125px"
+															src="./static/videos/purple_overalls_south_africa_sunset_0_canny.gif">
+														<img width="125px"
+															src="./static/videos/purple_overalls_south_africa_sunset_0_pose.gif">
+														<img width="125px"
+															src="./static/videos/purple_overalls_south_africa_sunset_0_segmentation.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;justify-content: center;">
+														<img style="position: relative;" width="250px" height="250px"
+															src="./static/videos/purple_overalls_south_africa_sunset_0.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<br><br>
+							<br><br>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									"A skateboarder mid-trick, airborne above<br>
+									a bench, wears a casual outfit and a beanie,<br>
+									displaying focus and athletic skill"
+									<br>
+									+
+									<br>
+									<img src="./static/videos/4832033-uhd_2160_3840_30fps_1.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Controls</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div class="multi-source-div">
+														<img width="125px"
+															src="./static/videos/4832033-uhd_2160_3840_30fps_1_depth.gif">
+														<img width="125px"
+															src="./static/videos/4832033-uhd_2160_3840_30fps_1_canny.gif">
+														<img width="125px"
+															src="./static/videos/4832033-uhd_2160_3840_30fps_1_pose.gif">
+														<img width="125px"
+															src="./static/videos/4832033-uhd_2160_3840_30fps_1_segmentation.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);"
+														width="50px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;justify-content: center;">
+														<img style="position: relative;" width="250px" height="250px"
+															src="./static/videos/4832033-uhd_2160_3840_30fps_1.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br><br>
+					
+
+					<div class="content is-centered has-text-centered"    style="margin: auto;">
+						<h3 class="example-heading">Video Generation with Multiple Control Conditions (using Patch-Level MLP)</h3>
+						<hr>
+						<div>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto;font-size: 1.5em;">
+									"butterfly"
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>First Frame + Controls</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div class="multi-source-div" style="max-width: 100000px;">
+														<img width="100%"
+															src="./static/videos/moe/butterfly_0_crop.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);left:100px"
+														width="100px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;justify-content: center;">
+														<img style="position: relative;" width="250px" height="250px"
+															src="./static/videos/moe/patch_mlp/butterfly_0.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<br><br>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto;font-size: 1.5em;">
+									"dog agility"
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>First Frame + Controls</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div class="multi-source-div" style="max-width: 100000px;">
+														<img width="100%"
+															src="./static/videos/moe/dog-agility_0_crop.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);left:100px"
+														width="100px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;justify-content: center;">
+														<img style="position: relative;" width="250px" height="250px"
+															src="./static/videos/moe/patch_mlp/dog-agility_0.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<br><br>
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto;font-size: 1.5em;">
+									"flamingo"
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>First Frame + Controls</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div class="multi-source-div" style="max-width: 100000px;">
+														<img width="100%"
+															src="./static/videos/moe/flamingo_4_crop.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);left:100px"
+														width="100px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;justify-content: center;">
+														<img style="position: relative;" width="250px" height="250px"
+															src="./static/videos/moe/patch_mlp/flamingo_4.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<br><br>
+							
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto;font-size: 1.5em;">
+									"snowboard"
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>First Frame + Controls</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div class="multi-source-div" style="max-width: 100000px;">
+														<img width="100%"
+															src="./static/videos/moe/snowboard_3_crop.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);left:100px"
+														width="100px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;justify-content: center;">
+														<img style="position: relative;" width="250px" height="250px"
+															src="./static/videos/moe/patch_mlp/snowboard_3.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<br><br>
+							
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto;font-size: 1.5em;">
+									"tennis"
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>First Frame + Controls</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div class="multi-source-div" style="max-width: 100000px;">
+														<img width="100%"
+															src="./static/videos/moe/tennis_1_crop.gif">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);left:100px"
+														width="100px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;justify-content: center;">
+														<img style="position: relative;" width="250px" height="250px"
+															src="./static/videos/moe/patch_mlp/tennis_1.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<br><br>
+
+						</div>
+					</div>
+					<br><br>
+					
+
+					<div class="content is-centered has-text-centered"   style="max-width: 1200px;margin: auto;">
+						<h3 class="example-heading">Video Editing via Combining Image and Video Ctrl-Adapters</h3>
+						<hr>
+
+						<div style="max-width: 1200px;margin: auto;display: flex;flex-wrap: nowrap;">
+							<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+								
+								<p style="text-align: center;font-weight: bold;">(1) Control Condition Extraction</p>
+								<img style="position: relative;width: 125px !important;"
+									src="./static/videos/camel_src.gif">
+									<img style="position: relative;top:-45px; width: 50px !important;" src="./static/images/arrow_icon.jpg">
+								<img style="position: relative;width: 125px !important;"
+									src="./static/videos/camel_condition.gif">
+							</div>
+							<div class="content example">
+								<table>
+									<thead>
+										<tr style="font-size: 1em;">
+											<th></th>
+											<th>Input Prompt</th>
+											<th></th>
+											<th>(2) Generated Frame<br><span style="font-size: 0.8em;">(Generated by SDXL + Ctrl-Adapter)</span></th>
+											<th></th>
+											<th>(3) Generated Video<br><span style="font-size: 0.8em;">(Generated by I2VGen-XL + Ctrl-Adapter)</span></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="100px" src="./static/images/plus.png">
+											</td>
+											<td style="text-align: left;">
+												<p style="font-size: 1.1em;">
+													A camel with
+													<span style="color: red;">rainbow fur</span>
+													walking.
+												</p>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="100px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/camel_rainbow_first.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="100px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/camel_rainbow_sdxl_1.gif">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="100px" src="./static/images/plus.png">
+											</td>
+											<td style="text-align: left;">
+												<p style="font-size: 1.1em;">A <span style="color: red;">zebra
+													stripped</span>
+													camel
+													walking.</p>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="100px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img width="125px" height="125px"
+														src="./static/videos/camel_stripped_sdxl_first_frame.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="100px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/camel_stripped_sdxl_0.gif">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="100px" src="./static/images/plus.png">
+											</td>
+											<td style="text-align: left;">
+												<p style="font-size: 1.1em;">A camel
+													walking, <span style="color: red;">ink
+														sketch style</span>.</p>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="100px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img width="125px" height="125px"
+														src="./static/videos/painting_camel_first.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="100px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/camel_ink_sdxl_2.gif">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="200px" src="./static/images/plus.png">
+											</td>
+											<td style="text-align: left;">
+												<p style="font-size: 1.1em;">
+													A camel
+													walking, <span style="color: red;">van
+														gogh-style</span>.</p>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="200px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto;">
+													<img width="125px" height="125px"
+														src="./static/videos/van_gogh_camel.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="200px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/camel_van_gogh_sdxl_0.gif">
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<br><br>
+						<br><br>
+					</div>
+					<br><br>
+
+					<div class="content is-centered has-text-centered"   style="max-width: 1200px;margin: auto;">
+						<h3 class="example-heading">Text-Guided Motion Control</h3>
+						<hr>
+
+						<div style="max-width: 1200px;margin: auto;display: flex;flex-wrap: nowrap;">
+							<div class="content example">
+								<table>
+									<thead>
+										<tr style="font-size: 1em;">
+											<th>Initial Frame</th>
+											<th></th>
+											<th>Object Masking</th>
+											<th></th>
+											<th>Input Prompt</th>
+											<th></th>
+											<th>Generated Video<br><span style="font-size: 0.8em;">(Generated by I2VGen-XL + Ctrl-Adapter)</span></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/inpainting/1ESXz6gPL_jYm6ox_3.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/inpainting/1ESXz6gPL_jYm6ox_3.gif">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/plus.png">
+											</td>
+											<td style="text-align: left;">
+												<p style="font-size: 1.1em;">
+													A white and orange
+													tabby alley cat is
+													seen darting across
+													a back street alley in
+													a heavy rain, looking
+													for shelter.
+												</p>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/inpainting/output/1ESXz6gPL_jYm6ox_3.gif">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/inpainting/happy-cat_5.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/inpainting/happy-cat_5.gif">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/plus.png">
+											</td>
+											<td style="text-align: left;">
+												<p style="font-size: 1.1em;">
+													A white and orange tabby
+													cat is darting through a
+													dense garden, as if chasing
+													something
+												</p>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/inpainting/output/happy-cat_5.gif">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/inpainting/3195531-uhd_3840_2160_25fps_4.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/inpainting/3195531-uhd_3840_2160_25fps_4.gif">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/plus.png">
+											</td>
+											<td style="text-align: left;">
+												<p style="font-size: 1.1em;">
+													An elk with impressive
+													antlers grazing on the
+													snow-covered ground
+												</p>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/inpainting/output/3195531-uhd_3840_2160_25fps_4.gif">
+												</div>
+											</td>
+										</tr>
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<br><br>
+						<br><br>
+					</div>
+					<br><br>
+
+					
+					<div class="content is-centered has-text-centered"   style="max-width: 1200px;margin: auto;">
+						<h3 class="example-heading">Video Style Transfer</h3>
+						<hr>
+
+						<div style="max-width: 1200px;margin: auto;display: flex;flex-wrap: nowrap;">
+							<div class="content example">
+								<table>
+									<thead>
+										<tr style="font-size: 1em;">
+											<th>Initial Frame</th>
+											<th></th>
+											<th>Shuffled</th>
+											<th></th>
+											<th>Input Prompt</th>
+											<th></th>
+											<th>Generated Video<br><span style="font-size: 0.8em;">(Generated by I2VGen-XL + Ctrl-Adapter)</span></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/style_transfer/b2_4.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/style_transfer/b2_4.gif">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/plus.png">
+											</td>
+											<td style="text-align: left;">
+												<p style="font-size: 1.1em;">
+													A miniature Christmas village with
+													snow-covered houses, glowing windows,
+													decorated trees, festive snowmen, and
+													tiny figurines in a quaint, holiday-themed
+													diorama evoking a cozy, celebratory
+													winter atmosphere
+												</p>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/style_transfer/output/b2_4.gif">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/style_transfer/eRA7p5OfGuDtAZCr_5.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/style_transfer/eRA7p5OfGuDtAZCr_5.gif">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/plus.png">
+											</td>
+											<td style="text-align: left;">
+												<p style="font-size: 1.1em;">
+													Stop motion of a colorful paper flower blooming
+												</p>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/style_transfer/output/eRA7p5OfGuDtAZCr_5.gif">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/style_transfer/tokyo-in-the-snow_2.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; ">
+													<img width="125px" height="125px"
+														src="./static/videos/style_transfer/tokyo-in-the-snow_2.gif">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/plus.png">
+											</td>
+											<td style="text-align: left;">
+												<p style="font-size: 1.1em;">
+													Beautiful, snowy Tokyo city is bustling
+												</p>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/style_transfer/output/tokyo-in-the-snow_2.gif">
+												</div>
+											</td>
+										</tr>
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<br><br>
+						<br><br>
+					</div>
+					<br><br>
+
+					
+					
+					<div class="content is-centered has-text-centered"  style="max-width: 850px;margin: auto;">
+						<h3 class="example-heading">Video Generation with Sparse Frames as Control Condition</h3>
+						<hr>
+						<div>					
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									"Fly through tour of a museum with many paintings<br>and sculptures and beautiful works of art in all styles"
+									<br>
+									+
+									<br>
+									<img src="./static/videos/sparse/M9SFmxyAlrc-CceT_5_4frame_scribble_initial_frame.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Sparse Inputs<br>(Condition is given for 4 out of 16 frames)</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div style="display: flex; align-items: center; column-gap: 5px;height: 250px;">
+														<img width="100px" src="./static/videos/sparse/M9SFmxyAlrc-CceT_5_4frame_scribble_condition/00000.png">
+														<img width="100px" src="./static/videos/black.png">
+														<span style="font-size: 1.5em;">&nbsp;...&nbsp;</span>
+														<img width="100px" src="./static/videos/black.png">
+														<img width="100px" src="./static/videos/sparse/M9SFmxyAlrc-CceT_5_4frame_scribble_condition/00015.png">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);" width="75px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;justify-content: center;">
+														<img style="position: relative;max-height: 250px;" width="250px" height="250px" src="./static/videos/sparse/M9SFmxyAlrc-CceT_5.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<br><br>
+						
+						<div>					
+							<div>
+								<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+									"Reflections in the window of a train traveling through the Tokyo suburbs."
+									<br>
+									+
+									<br>
+									<img src="./static/videos/sparse/train_window_2_initial_frame.png">
+								</div>
+								<div class="content example">
+									<table>
+										<thead>
+											<tr>
+												<th>Sparse Inputs<br>(Condition is given for 4 out of 16 frames)</th>
+												<th></th>
+												<th>Generated Video</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div style="display: flex; align-items: center; column-gap: 5px;height: 250px;">
+														<img width="100px" src="./static/videos/sparse/train-window_2_depth_condition/00000.png">
+														<img width="100px" src="./static/videos/black.png">
+														<span style="font-size: 1.5em;">&nbsp;...&nbsp;</span>
+														<img width="100px" src="./static/videos/black.png">
+														<img width="100px" src="./static/videos/sparse/train-window_2_depth_condition/00015.png">
+													</div>
+												</td>
+												<td>
+													<img style="position: relative;top:50%;transform: translateY(-50%);" width="75px" src="./static/images/arrow_icon.jpg">
+												</td>
+												<td>
+													<div style="display: flex;justify-content: center;">
+														<img style="position: relative;max-height: 250px;" width="250px" height="250px" src="./static/videos/sparse/train-window_2.gif">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br><br>				
+					
+
+					<div class="content is-centered has-text-centered"   style="max-width: 900px;margin: auto;">
+						<h3 class="example-heading">Zero-Shot Generalization on Unseen Conditions</h3>
+						<hr>
+						<div>
+							<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+								"An old man wearing purple overalls and<br>
+								cowboy boots taking a pleasant stroll in<br>
+								Mumbai India during a beautiful sunset"
+								<br>
+								+
+								<br>
+								<img
+									src="./static/videos/initial_frame_man_india_purple_1.png">
+							</div>
+							<div class="content example">
+								<table>
+									<thead>
+										<tr>
+											<th>Condition</th>
+											<th>Controls</th>
+											<th></th>
+											<th>Generated Video</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="text-align: left;">
+												<p>Training: Depth Map</p>
+												<p>Inference: Normal Map</p>
+											</td>
+											<td>
+												<div>
+													<img width="250px"
+														src="./static/videos/man_india_purple_1_normal.gif">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="75px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width:250px;">
+													<img style="position: relative;" width="250px" height="250px"
+														src="./static/videos/man_india_purple_1_normal_out.gif">
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<br><br>
+						<br><br>
+						<div>
+							<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+								"An extreme close-up of an gray-haired man with a beard in his 60s, he is deep in thought<br>pondering the history of the universe.
+								He sits at a cafe in Paris, his eyes focus on people offscreen.
+								As they walk, he sits mostly motionless, he is dressed in a wool coat suit coat.<br>
+								With a button-down shirt, he wears a brown beret and glasses."
+								<br>
+								+
+								<br>
+								<img src="./static/videos/mans_face_first.png">
+							</div>
+							<div class="content example">
+								<table>
+									<thead>
+										<tr>
+											<th>Condition</th>
+											<th>Controls</th>
+											<th></th>
+											<th>Generated Video</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="text-align: left;">
+												<p>Training: Depth Map</p>
+												<p>Inference: Line art</p>
+											</td>
+											<td>
+												<div>
+													<img width="250px"
+														src="./static/videos/closeup-man-in-glasses_5_lineart.gif">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="75px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width:250px;">
+													<img style="position: relative;" width="250px" height="250px"
+														src="./static/videos/closeup-man-in-glasses_5_lineart_out.gif">
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<br><br>
+						<br><br>
+						<div>
+							<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+								"This close-up shot of a chameleon showcases its striking color changing capabilities.<br>
+								The background is blurred, drawing attention to the animal's striking appearance.<br>
+								The chameleon's vibrant colors and unique texture are the focus of this shot."
+								<br>
+								+
+								<br>
+								<img src="./static/videos/chameleon_11_first.png">
+							</div>
+							<div class="content example">
+								<table>
+									<thead>
+										<tr>
+											<th>Condition</th>
+											<th>Controls</th>
+											<th></th>
+											<th>Generated Video</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="text-align: left;">
+												<p>Training: Depth Map</p>
+												<p>Inference: Softedge</p>
+											</td>
+											<td>
+												<div>
+													<img width="250px" src="./static/videos/chameleon_11_softedge.gif">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="75px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 250px;margin:auto;">
+													<img style="position: relative;" width="250px" height="250px"
+														src="./static/videos/chameleon_11_softedge_out.gif">
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<br><br>
+
+					<div class="content is-centered has-text-centered">
+						<h3 class="example-heading">Image Generation with Condition Control (w/ SDXL; U-Net based)</h3>
+						<hr>
+
+						<div style="max-width: 1200px;margin: auto;">
+							<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+								<!-- <img style="position: relative;width: 125px !important;"  src="./static/videos/camel_condition.gif"> -->
+							</div>
+							<div class="content example">
+								<table>
+									<thead>
+										<tr>
+											<th>Prompt</th>
+											<th>Control</th>
+											<th></th>
+											<th>Generated Image</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="text-align: center;">
+												<p style="font-size: 1.2em;">
+													Cute fluffy corgi dog in
+													the city in anime style
+												</p>
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img width="125px" height="125px"
+														src="./static/videos/anime_corgi_canny_condition/00000.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/anime_corgi_canny/00000.png">
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td style="text-align: center;">
+												<p style="font-size: 1.2em;">
+													happy Hulk standing in a beautiful field of
+													flowers, colorful flowers everywhere,
+													perfect lighting, leica summicron 35mm
+													f2.0, Kodak Portra 400, film grain
+												</p>
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img width="125px" height="125px"
+														src="./static/videos/happy_hulk_depth_condition/00000.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/happy_hulk_depth/00000.png">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td style="text-align: center;">
+												<p style="font-size: 1.2em;">Astronaut walking on
+													water</p>
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img width="125px" height="125px"
+														src="./static/videos/astronaut_water_canny_condition/00000.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/astronaut_water_canny/00000.png">
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td style="text-align: center;">
+												<p style="font-size: 1.2em;">a cute mouse pilot wearing
+													aviator goggles, unreal engine
+													render, 8k</p>
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img width="125px" height="125px"
+														src="./static/videos/mouse_pilot_depth_condition/00000.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/mouse_pilot_depth/00000.png">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td style="text-align: center;">
+												<p style="font-size: 1.2em;">
+													Cute lady frog in dress and
+													crown dressed in gown in
+													cinematic environment</p>
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img width="125px" height="125px"
+														src="./static/videos/crown_frog_canny_condition/00000.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/crown_frog_canny/00000.png">
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td style="text-align: center;">
+												<p style="font-size: 1.2em;">
+													A cute sheep with rainbow fur, photo</p>
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img width="125px" height="125px"
+														src="./static/videos/rainbow_sheep_depth_condition/00000.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/rainbow_sheep_depth/00000.png">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td style="text-align: center;">
+												<p style="font-size: 1.2em;">
+													Cute and super adorable mouse in
+													black and red chef coat and chef
+													hat, holding a steaming entree</p>
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto;">
+													<img width="125px" height="125px"
+														src="./static/videos/chef_mouse_canny_condition/00000.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/chef_mouse_canny/00000.png">
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td style="text-align: center;">
+												<p style="font-size: 1.2em;">
+													a cute, happy hedgehog taking a bite
+													from a piece of watermelon, eyes
+													closed, cute ink sketch style
+													illustration</p>
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto;">
+													<img width="125px" height="125px"
+														src="./static/videos/watermelon_hedgehog_depth_condition/00000.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/watermelon_hedgehog_depth/00000.png">
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<br><br>
+						<br><br>
+					</div>
+					<br><br>
+
+					<div class="content is-centered has-text-centered">
+						<h3 class="example-heading">Image Generation with Condition Control (w/ Pixart-&alpha;; DiT based)</h3>
+						<hr>
+
+						<div style="max-width: 1200px;margin: auto;">
+							<div class="example-prompt" style="text-align: center; width: 85%;margin:auto">
+								<!-- <img style="position: relative;width: 125px !important;"  src="./static/videos/camel_condition.gif"> -->
+							</div>
+							<div class="content example">
+								<table>
+									<thead>
+										<tr>
+											<th>Prompt</th>
+											<th>Control</th>
+											<th></th>
+											<th>Generated Image</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="text-align: center;">
+												<p style="font-size: 1.2em;">
+													A plate of cheesecake, pink
+													flowers everywhere, cinematic
+													lighting, food photography
+												</p>
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img width="125px" height="125px"
+														src="./static/videos/pixart-alpha/condition/cheesecake.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/pixart-alpha/output/cheesecake.png">
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td style="text-align: center;">
+												<p style="font-size: 1.2em;">
+													Darth Vader in a beautiful field
+													of flowers, colorful flowers
+													everywhere, perfect lighting
+												</p>
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img width="125px" height="125px"
+														src="./static/videos/pixart-alpha/condition/darth_vader_flower.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/pixart-alpha/output/darth_vader_flower.png">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td style="text-align: center;">
+												<p style="font-size: 1.2em;">
+													A micro-tiny clay pot full of dirt
+													with a beautiful daisy planted in
+													it, shining in the autumn sun
+												</p>
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img width="125px" height="125px"
+														src="./static/videos/pixart-alpha/condition/flower_pot.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/pixart-alpha/output/flower_pot.png">
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td style="text-align: center;">
+												<p style="font-size: 1.2em;">
+													A raccoon family having a nice
+													meal, life-like
+												</p>
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img width="125px" height="125px"
+														src="./static/videos/pixart-alpha/condition/racoon_family.png">
+												</div>
+											</td>
+											<td>
+												<img style="position: relative;top:50%;transform: translateY(-50%);"
+													width="50px" src="./static/images/arrow_icon.jpg">
+											</td>
+											<td>
+												<div style="display: flex;width: 125px;margin:auto; margin: auto">
+													<img style="position: relative;" width="125px" height="125px"
+														src="./static/videos/pixart-alpha/output/racoon_family.png">
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<br><br>
+						<br><br>
+					</div>
+					<br><br>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+</body>
+<style>
+	code {
+		display: block;
+	}
+</style>
+<script>
+	var code = document.querySelector('pre code');
+	code.innerHTML = code.textContent.replace(/(\w)/, '<span>$1');
+	var left = code.querySelector('span').getClientRects()[0].left;
+	code.style.marginLeft = (-left + code.getClientRects()[0].left) + 'px';  
+</script>
+
+</html>
